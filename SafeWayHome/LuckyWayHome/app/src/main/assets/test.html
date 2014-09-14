@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html >
+	<head>
+		<title>LWH</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+		 <link rel="stylesheet" href="leaflet.css" />
+		 <style>
+
+		 body {
+          padding: 0;
+          margin: 0;
+          }
+           html, body, #map {
+          height: 100%;
+          }
+          #splashscreen{
+             position:absolute;
+             top:0;
+             left:0;
+             right:0;
+             bottom:0;
+             background-color:black;
+             z-index:9999;
+             }
+		 </style>
+
+        <script src="leaflet.js"></script>
+		 <script src="http://dev.kibl.de/jugendhackt/crawler/json.php"></script>
+
+	</head>
+	<body>
+        <div id="splashscreen"></div>
+		<div id="map"></div>
+		 <script>
+           var ico = L.icon({
+            iconUrl: 'marker.png',
+            iconSize:  [45,45],
+            iconAnchro: [23,44],
+            popupAnchro: [-3,-76]
+            })
+		 var map = L.map('map').setView([52.5121052,13.3794285,13], 15);
+        map.locate({setView: true}) /* This will return map so you can do chaining */
+
+        map.on('locationfound', function(e){
+            map.setView([e.latitude, e.longitude],17);
+
+            L.marker([e.latitude,e.longitude],{icon: ico} ).addTo(map);
+            document.getElementById('splashscreen').style.display = 'none';
+        })
+       map.on('locationerror', function(e){
+            document.getElementById('splashscreen').style.display = 'none';
+            console.log(e);
+            alert("Für Ortung bitte standort bestimmung anschalten ");
+        });
+        L.tileLayer('https://{s}.tiles.mapbox.com/v3/{id}/{z}/{x}/{y}.png', {
+            maxZoom: 18,
+            attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
+                '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+                'Imagery © <a href="http://mapbox.com">Mapbox</a>',
+            id: 'examples.map-i86knfo3'
+        }).addTo(map);
+
+
+        data.forEach(function(d){
+        var circle = [L.circle([d.latitide,d.longitude], 150, {
+          color: 'red',
+          fillColor: '#f03',
+          fillOpacity: 0.5,
+          stroke: false,
+
+         }).addTo(map).bindPopup('<a href="' + d.url + '"> Pressemitteilung </a>')];
+
+       })
+
+ </script>
+
+	</body>
+	
+	
+</html>
